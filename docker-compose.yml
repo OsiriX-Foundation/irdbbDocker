@@ -1,19 +1,31 @@
 version: "3.1"
 services:
+  fhirdb:
+    image: postgres:10.4
+    container_name: fhirdb
+    environment:
+      POSTGRES_DB: hapifhir
+      POSTGRES_USER: medirad
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - fhir-db-data:/var/lib/postgresql/data
+
   fhir:
     container_name: fhir
     image: medirad-docker-virtual.artifact.b-com.com/hapi-fhir:${FHIR_TAG}
     environment:
       JAVA_OPTIONS: -Xms10g -Xmx10g -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
-      FHIR_DB_HOST: 10.5.6.2
-      FHIR_DB_PORT: 5432
-      FHIR_BASE: /medirad_hapifhir
-      FHIR_DB_USER: medirad_hapifhir
-      FHIR_DB_PASSWORD:
+      FHIR_DB_HOST: fhirdb
+      FHIR_BASE: /hapifhir
+      POSTGRES_DB: hapifhir
+      POSTGRES_USER: medirad
+      POSTGRES_PASSWORD: secret
     logging:
       driver: json-file
       options:
         max-size: "10m"
+    depends_on:
+      - fhirdb
 
   dns:
     container_name: dns
@@ -33,10 +45,14 @@ services:
       driver: json-file
       options:
         max-size: "10m"
+    depends_on:
+      - arc
+      - semantic-translator
+      - fhir
     
   stardog_db:
     container_name: stardog
-    image: mystardog:${STARDOG_TAG}
+    image: medirad-docker-virtual.artifact.b-com.com/stardog:${STARDOG_TAG}
     logging:
       driver: json-file
       options:
@@ -44,7 +60,7 @@ services:
     volumes:
       - stardog:/stardog
       - stardog-license:/stardog-license
-      - /d4docker_archive:/stardog_db
+      - stardog-db:/stardog_db
     networks:
       default:
         aliases:
@@ -63,9 +79,6 @@ services:
         max-size: "10m"
     depends_on:
       - stardog_db
-    networks:
-      - default
-      - irdbb_importer
     
   arc:
     image: nginx:${KHEOPS_NGINX_ARC_TAG}
@@ -74,6 +87,8 @@ services:
       - "8080:8080"
     volumes:
       - ./conf/nginxconf:/etc/nginx/
+    extra_hosts:
+      - "aneux.kheops.online:10.5.7.9"
     networks:
       - default
       - kheops
@@ -118,9 +133,6 @@ networks:
   default:
     external:
       name: medirad
-  irdbb_importer:
-    external:
-      name: kheops_irdbb_importer_network
   kheops:
     external:
       name: kheops_reverseproxy_network
