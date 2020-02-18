@@ -9,7 +9,7 @@ services:
       FHIR_DB_PORT: 5432
       FHIR_BASE: /medirad_hapifhir
       FHIR_DB_USER: medirad_hapifhir
-      FHIR_DB_PASSWORD:
+    env_file: hapifhir.env
     logging:
       driver: json-file
       options:
