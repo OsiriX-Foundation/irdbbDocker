@@ -85,7 +85,7 @@ services:
       - stardog_db
     
   arc:
-    image: nginx:${KHEOPS_NGINX_ARC_TAG}
+    image: osirixfoundation/irdbb-pacs:${KHEOPS_NGINX_ARC_TAG}
     container_name: pacsarc
     ports:
       - "8080:8080"
@@ -96,6 +96,8 @@ services:
     networks:
       - default
       - kheops
+    secrets:
+      - kheops_token
 
   nginx:
     container_name: irdbbreverseproxy
@@ -135,6 +137,8 @@ secrets:
     file: secrets/privkey1.pem
   client_secret:
     file: secrets/client_secret
+  kheops_token:
+    file: secrets/kheops_token
 
 networks:
   default:
