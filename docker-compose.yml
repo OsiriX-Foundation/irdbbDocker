@@ -108,6 +108,7 @@ services:
       MEDIRAD_NGINX_ENABLE_ELASTIC: "true"
       MEDIRAD_NGINX_LOGSTASH_URL: 10.5.7.4:5044
       MEDIRAD_NGINX_ELASTIC_INSTANCE: medirad
+      IRDBB_ROOT_HOST: irdbb-staging.kheops.online
     depends_on:
       - arc
       - semantic-translator
@@ -115,11 +116,11 @@ services:
       - dns
       - fhir
     volumes:
-      - ./conf/reverseproxy/conf:/usr/local/openresty/nginx/conf
       - ./conf/reverseproxy/openssl:/opt/local/etc/openssl
     secrets:
       - fullchain1.pem
       - privkey1.pem
+      - client_secret
 
 volumes:
   fhir-db-data:
@@ -132,6 +133,8 @@ secrets:
     file: secrets/fullchain1.pem
   privkey1.pem:
     file: secrets/privkey1.pem
+  client_secret:
+    file: secrets/client_secret
 
 networks:
   default:
