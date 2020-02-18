@@ -99,7 +99,7 @@ services:
 
   nginx:
     container_name: irdbbreverseproxy
-    image: nicolasvandooren/nginxmedirad:${REVERSE_PROXY_TAG}
+    image: osirixfoundation/irdbb-reverse-proxy:${REVERSE_PROXY_TAG}
     logging:
       driver: json-file
       options:
