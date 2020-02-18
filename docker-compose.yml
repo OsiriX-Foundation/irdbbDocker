@@ -87,12 +87,6 @@ services:
   arc:
     image: osirixfoundation/irdbb-pacs:${KHEOPS_NGINX_ARC_TAG}
     container_name: pacsarc
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./conf/nginxconf:/etc/nginx/
-    extra_hosts:
-      - "aneux.kheops.online:10.5.7.9"
     networks:
       - default
       - kheops
