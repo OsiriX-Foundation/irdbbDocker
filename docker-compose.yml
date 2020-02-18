@@ -116,7 +116,7 @@ services:
       - dns
       - fhir
     volumes:
-      - ./conf/reverseproxy/openssl:/opt/local/etc/openssl
+      - ./conf/reverseproxy:/opt/local/etc/openssl
     secrets:
       - fullchain1.pem
       - privkey1.pem
