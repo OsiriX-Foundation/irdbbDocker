@@ -1,5 +1,9 @@
 version: "3.1"
 services:
+  sparklis:
+    image: medirad-docker-virtual.artifact.b-com.com/sparklis:${SPARKLIS_TAG}
+    container_name: sparklis
+
   fhir:
     container_name: fhir
     image: medirad-docker-virtual.artifact.b-com.com/hapi-fhir:${FHIR_TAG}
