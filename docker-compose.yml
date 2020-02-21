@@ -21,9 +21,10 @@ services:
       JAVA_OPTIONS: -Xms10g -Xmx10g -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
       FHIR_DB_HOST: fhirdb
       FHIR_BASE: /hapifhir
+      FHIR_DB_USER: medirad
       POSTGRES_DB: hapifhir
       POSTGRES_USER: medirad
-      POSTGRES_PASSWORD: secret
+    env_file: hapifhir.env
     logging:
       driver: json-file
       options:
@@ -112,7 +113,7 @@ services:
       - dns
       - fhir
     volumes:
-      - ./conf/reverseproxy:/opt/local/etc/openssl
+      - ./conf/reverseproxy/openssl:/opt/local/etc/openssl
     secrets:
       - fullchain1.pem
       - privkey1.pem
