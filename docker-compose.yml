@@ -54,13 +54,22 @@ services:
         aliases:
           - stardog
   
+  mitmproxy:
+    container_name: mitmproxy
+    image: mitmproxy/mitmproxy
+    command: mitmdump --listen-port 5820 --mode reverse:http://stardog:5820 -s /modify_querystring.py
+    volumes:
+      - ./modify_querystring.py:/modify_querystring.py
+    networks:
+      default:
+
   semantic-translator:
     container_name: semantictranslator
     image: medirad-docker-virtual.artifact.b-com.com/semantic-translator:${SEMANTIC_TRANSLATOR_TAG}
     environment:
       PACS_HOST: pacsarc
       FHIR_HOST: fhir
-      STARDOG_HOST: stardog
+      STARDOG_HOST: mitmproxy
     logging:
       driver: json-file
       options:
