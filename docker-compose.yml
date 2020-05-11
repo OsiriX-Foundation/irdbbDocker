@@ -84,6 +84,9 @@ services:
         max-size: "10m"
     depends_on:
       - stardog_db
+    networks:
+      - default
+      - irdbb_importer
     
   arc:
     image: osirixfoundation/irdbb-pacs:${KHEOPS_NGINX_ARC_TAG}
@@ -139,6 +142,9 @@ networks:
   default:
     external:
       name: medirad
+  irdbb_importer:
+    external:
+      name: kheops_irdbb_importer_network
   kheops:
     external:
       name: kheops_reverseproxy_network
