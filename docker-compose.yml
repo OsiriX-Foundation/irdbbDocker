@@ -40,7 +40,7 @@ services:
     
   stardog_db:
     container_name: stardog
-    image: mystardog:${STARDOG_TAG}
+    image: medirad-docker-virtual.artifact.b-com.com/stardog:0.0.31
     logging:
       driver: json-file
       options:
