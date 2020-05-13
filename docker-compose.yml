@@ -71,7 +71,7 @@ services:
       default:
         aliases:
           - stardog
-    mem_limit: 2048m
+    mem_limit: 8g
   
   semantic-translator:
     container_name: semantictranslator
