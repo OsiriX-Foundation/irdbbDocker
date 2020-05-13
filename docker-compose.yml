@@ -1,4 +1,4 @@
-version: "3.1"
+version: "2.4"
 services:
   sparklis:
     image: medirad-docker-virtual.artifact.b-com.com/sparklis:${SPARKLIS_TAG}
@@ -18,7 +18,7 @@ services:
     container_name: fhir
     image: medirad-docker-virtual.artifact.b-com.com/hapi-fhir:${FHIR_TAG}
     environment:
-      JAVA_OPTIONS: -Xms10g -Xmx10g -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+      JAVA_OPTIONS: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
       FHIR_DB_HOST: fhirdb
       FHIR_BASE: /hapifhir
       FHIR_DB_USER: medirad
@@ -31,6 +31,7 @@ services:
         max-size: "10m"
     depends_on:
       - fhirdb
+    mem_limit: 800m
 
   dns:
     container_name: dns
@@ -70,6 +71,7 @@ services:
       default:
         aliases:
           - stardog
+    mem_limit: 2048m
   
   semantic-translator:
     container_name: semantictranslator
@@ -87,15 +89,18 @@ services:
     networks:
       - default
       - irdbb_importer
+    mem_limit: 800m
     
   arc:
     image: osirixfoundation/irdbb-pacs:${KHEOPS_NGINX_ARC_TAG}
     container_name: pacsarc
+    environment:
+      - KHEOPS_TOKEN_FILE=/var/kheops_token
+    volumes:
+      - ./secrets/kheops_token:/var/kheops_token
     networks:
       - default
       - kheops
-    secrets:
-      - kheops_token
 
   nginx:
     container_name: irdbbreverseproxy
@@ -117,26 +122,15 @@ services:
       - fhir
     volumes:
       - ./conf/reverseproxy/openssl:/opt/local/etc/openssl
-    secrets:
-      - fullchain1.pem
-      - privkey1.pem
-      - client_secret
+      - ./secrets/fullchain1.pem:/run/secrets/fullchain1.pem
+      - ./secrets/privkey1.pem:/run/secrets/privkey1.pem
+      - ./secrets/client_secret:/run/secrets/client_secret
 
 volumes:
   fhir-db-data:
   stardog:
   stardog-license:
   stardog-db:
-
-secrets:
-  fullchain1.pem:
-    file: secrets/fullchain1.pem
-  privkey1.pem:
-    file: secrets/privkey1.pem
-  client_secret:
-    file: secrets/client_secret
-  kheops_token:
-    file: secrets/kheops_token
 
 networks:
   default:
