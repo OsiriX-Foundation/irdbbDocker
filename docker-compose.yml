@@ -74,6 +74,8 @@ services:
   arc:
     image: osirixfoundation/irdbb-pacs:${KHEOPS_NGINX_ARC_TAG}
     container_name: pacsarc
+    environment:
+      - KHEOPS_TOKEN_FILE=/run/secrets/kheops_token
     networks:
       - default
       - kheops
@@ -127,7 +129,7 @@ networks:
       name: medirad
   irdbb_importer:
     external:
-      name: kheops_irdbb_importer_network
+      name: sr-importer_irdbb_importer_network
   kheops:
     external:
       name: kheops_reverseproxy_network
