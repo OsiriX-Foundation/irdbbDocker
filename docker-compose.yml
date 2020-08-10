@@ -18,7 +18,7 @@ services:
     container_name: fhir
     image: medirad-docker-virtual.artifact.b-com.com/hapi-fhir:${FHIR_TAG}
     environment:
-      JAVA_OPTIONS: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+      JAVA_OPTIONS: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Xms256m -Xmx6g #-XshowSettings:vm -version
       FHIR_DB_HOST: fhirdb
       FHIR_BASE: /hapifhir
       FHIR_DB_USER: medirad
@@ -31,7 +31,8 @@ services:
         max-size: "10m"
     depends_on:
       - fhirdb
-    mem_limit: 800m
+    mem_limit: 8g
+    restart: always
 
   dns:
     container_name: dns
