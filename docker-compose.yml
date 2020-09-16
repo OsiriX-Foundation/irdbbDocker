@@ -129,7 +129,7 @@ networks:
       name: medirad
   irdbb_importer:
     external:
-      name: sr-importer_irdbb_importer_network
+      name: kheops_irdbb_importer_network
   kheops:
     external:
       name: kheops_reverseproxy_network
