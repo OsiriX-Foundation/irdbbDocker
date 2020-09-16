@@ -18,7 +18,7 @@ services:
       driver: json-file
       options:
         max-size: "10m"
-    mem_limit: 8g
+    # mem_limit: 8g
 
   dns:
     container_name: dns
@@ -54,7 +54,7 @@ services:
       default:
         aliases:
           - stardog
-    mem_limit: 8g
+    # mem_limit: 8g
   
   semantic-translator:
     container_name: semantictranslator
@@ -72,7 +72,7 @@ services:
     networks:
       - default
       - irdbb_importer
-    mem_limit: 800m
+    # mem_limit: 800m
     
   arc:
     image: osirixfoundation/irdbb-pacs:${KHEOPS_NGINX_ARC_TAG}
