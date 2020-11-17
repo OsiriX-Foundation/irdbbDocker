@@ -113,7 +113,7 @@ services:
     environment:
       MEDIRAD_NGINX_ENABLE_ELASTIC: "true"
       MEDIRAD_NGINX_LOGSTASH_URL: 10.5.7.4:5044
-      MEDIRAD_NGINX_ELASTIC_INSTANCE: medirad
+      MEDIRAD_NGINX_ELASTIC_INSTANCE: medirad-staging
       IRDBB_ROOT_HOST: irdbb-staging.kheops.online
     depends_on:
       - arc
